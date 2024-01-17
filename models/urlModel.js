@@ -26,7 +26,7 @@ const urlSchema = new mongoose.Schema({
         type: String,
         default: Date.now,
     },
-})
+}, {timestamps: true})
 
 const UrlModel = mongoose.model('urlshorten', urlSchema);
 module.exports = UrlModel;
