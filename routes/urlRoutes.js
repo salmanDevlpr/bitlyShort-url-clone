@@ -3,7 +3,7 @@ const router = express.Router();
 const { urlSortenGenerator,getRedirectUrl, getAllUrls } = require('../controllers/urlControllers')
 
 
-router.get('/:urlId', getRedirectUrl)
+router.get('/:id', getRedirectUrl)
 
 router.get('/urls/shorts', getAllUrls)
 

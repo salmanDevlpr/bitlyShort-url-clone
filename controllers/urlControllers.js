@@ -9,24 +9,26 @@ const getAllUrls = async(req, res)=> {
 };
 
 const urlSortenGenerator = async (req, res) => {
-    const { originalUrl, title } = req.body;
+    const { long_url, title } = req.body;
     const base = process.env.BASE_URL;
-    const urlId = shortId();
-    if(validateUrl(originalUrl)){
+    const id = shortId();
+    //adskfjasdf
+    if(validateUrl(long_url)){
         try {
-            let url = await UrlModel.findOne({originalUrl});
+            let url = await UrlModel.findOne({long_url});
             if(url){
                 res.json(url);
             }else{
-                const shortUrl = `${base}/${urlId}`
+                const link = `${base}/${id}`
                 const urlDetails = await UrlModel.create({
-                    urlId,
-                    shortUrl,
-                    originalUrl,
+                    id,
+                    link,
+                    long_url,
                     title,
                     date: new Date(),
                 });
 
+                l
                 return res.json(urlDetails)
 
             }
@@ -43,19 +45,18 @@ const urlSortenGenerator = async (req, res) => {
 };
 
 const getRedirectUrl = async(req, res) => {
-    console.log('req', req);
     try {
-        const url = await UrlModel.findOne({urlId: req.params.urlId});
+        const url = await UrlModel.findOne({id: req.params.id});
         if(url){
             await UrlModel.updateOne(
                 {
-                  urlId: req.params.urlId
+                  id: req.params.id
                 },
                 {
                     $inc: {clicks: 1}
                 }
             );
-            return res.redirect(url.originalUrl);
+            return res.redirect(url.long_url);
         }else{
             res.status(400).json({message:'Not found'});
         }

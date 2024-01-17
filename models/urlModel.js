@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 
 const urlSchema = new mongoose.Schema({
-    urlId: {
+    id: {
+        type: String,
+        required: true, 
+    },
+    long_url: {
         type: String,
         required: true,
     },
-    originalUrl: {
-        type: String,
-        required: true,
-    },
-    shortUrl: {
+    link: {
         type: String,
         required: true,
     },
@@ -26,7 +26,10 @@ const urlSchema = new mongoose.Schema({
         type: String,
         default: Date.now,
     },
-}, {timestamps: true})
+}, {
+    timestamps: true
+  }
+)
 
 const UrlModel = mongoose.model('urlshorten', urlSchema);
 module.exports = UrlModel;
