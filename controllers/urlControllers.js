@@ -1,7 +1,10 @@
 const shortId = require('shortid')
 const UrlModel = require('../models/urlModel');
+const ImageModel = require('../models/imageModel')
 const {validateUrl} = require('../utils/validationUrl');
 require('dotenv').config();
+const router = require('../routes/urlRoutes');
+const cloudinary  = require('../utils/cloudinary');
 
 const getAllUrls = async(req, res)=> {
     const urls = await UrlModel.find({});
@@ -27,8 +30,6 @@ const urlSortenGenerator = async (req, res) => {
                     title,
                     date: new Date(),
                 });
-
-                l
                 return res.json(urlDetails)
 
             }
@@ -67,10 +68,33 @@ const getRedirectUrl = async(req, res) => {
 
 };
 
+const uplaodImage = async(req, res) => {
+    try {
+        const result = await cloudinary.uploader.upload(req.file.path)
+        const imageFile = await ImageModel.create({
+           imageUrl: result.secure_url,
+           cloudinaryId: result.public_id,
+
+        })
+        res.status(200).json(imageFile)
+    } catch (error) {
+        console.log('error', error.message);
+        res.status(500).json({message: error.message})
+    }
+}
+
+
+const getAllImage = async(req, res)=> {
+    const getImages = await ImageModel.find({});
+    res.send(getImages)
+}
+
 
 
 module.exports = {
     urlSortenGenerator,
     getRedirectUrl,
-    getAllUrls
+    getAllUrls,
+    uplaodImage,
+    getAllImage
 }

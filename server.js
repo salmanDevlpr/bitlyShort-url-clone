@@ -7,6 +7,7 @@ const urlRoutes = require('./routes/urlRoutes');
 
 const app = express();
 
+app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 app.use(cors())
 const PORT = process.env.PORT || 8000;
