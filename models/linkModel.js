@@ -5,11 +5,19 @@ const urlSchema = new mongoose.Schema({
         type: String,
         required: true, 
     },
+    qr_id: {
+        type: String,
+        required: true, 
+    },
     long_url: {
         type: String,
         required: true,
     },
     link: {
+        type: String,
+        required: true,
+    },
+    qrCodeLink: {
         type: String,
         required: true,
     },
@@ -22,10 +30,11 @@ const urlSchema = new mongoose.Schema({
         required: true,
         default: 0,
     },
-    date: {
-        type: String,
-        default: Date.now,
-    },
+    qrScanCount: {
+        type: Number,
+        required: true,
+        default: 0,
+    }
 }, {
     timestamps: true
   }

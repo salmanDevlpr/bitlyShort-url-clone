@@ -7,7 +7,17 @@ const cloudinary  = require('../utils/cloudinary');
 const QrCodeModel = require('../models/qrcodeModel');
 
 const getAllUrls = async(req, res)=> {
-    const urls = await UrlModel.find({});
+    const urls = await UrlModel.find({}, {
+        id: 1,
+        qr_id: 1,
+        long_url: 1,
+        link: 1,
+        qrCodeLink: 1,
+        title: 1,
+        clicks: 1,
+        qrScanCount: 1,
+        createdAt: 1
+    });
     res.send(urls);
 };
 
@@ -19,18 +29,23 @@ const getAllQrUrls = async(req, res)=> {
 const urlSortenGenerator = async (req, res) => {
     try {
         const { long_url, title } = req.body;
-        const base = process.env.BASE_LINK_URL;
+        const baseLinkUrl = process.env.BASE_LINK_URL;
+        const baseQrCode = process.env.BASE_QRCODE_URL;
         const id = shortId();
+        const qr_id = shortId();
         if(validateUrl(long_url)){
             try {
                 let url = await UrlModel.findOne({long_url});
                 if(url){
                     res.json(url);
                 }else{
-                    const link = `${base}/${id}`
+                    const link = `${baseLinkUrl}/${id}`
+                    const qrCodeLink = `${baseQrCode}/${qr_id}`
                     const urlDetails = await UrlModel.create({
                         id,
+                        qr_id,
                         link,
+                        qrCodeLink,
                         long_url,
                         title,
                         date: new Date(),
@@ -102,7 +117,7 @@ const getRedirectUrl = async(req, res) => {
             return res.redirect(url.long_url);
         }else{
             res.status(400).json({message:'Not found url'});
-        }
+        }  
     } catch (error) {
         console.log('error', error);
         res.status(500).json({message: 'server Error'})
@@ -112,9 +127,9 @@ const getRedirectUrl = async(req, res) => {
 
 const getQrCodeScanned = async (req, res) => {
     try {
-        const qrCodeScan = await QrCodeModel.findOne({qr_id: req.params.qr_id});
+        const qrCodeScan = await UrlModel.findOne({qr_id: req.params.qr_id});
         if(qrCodeScan){
-            await QrCodeModel.updateOne(
+            await UrlModel.updateOne(
                 {
                    qr_id: req.params.qr_id
                 },
@@ -124,7 +139,7 @@ const getQrCodeScanned = async (req, res) => {
             );
             return res.redirect(qrCodeScan.long_url)
         }else{
-            res.status(400).send('Not found url')
+            res.status(400).send('Url not found');
         }
     } catch (error) {
         console.log('error in qrcode scanned', error);

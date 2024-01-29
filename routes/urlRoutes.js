@@ -21,7 +21,7 @@ router.get('/link/:id', getRedirectUrl)
 
 router.get('/qrcode/:qr_id', getQrCodeScanned)
 
-router.get('/urls/shorts', getAllUrls)
+router.get('/short/urls', getAllUrls)
 
 router.get('/qrcode/scan/links', getAllQrUrls)
 
