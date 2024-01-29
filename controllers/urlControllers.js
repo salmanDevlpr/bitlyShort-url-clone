@@ -19,7 +19,7 @@ const getAllQrUrls = async(req, res)=> {
 const urlSortenGenerator = async (req, res) => {
     try {
         const { long_url, title } = req.body;
-        const base = process.env.BASE_URL;
+        const base = process.env.BASE_LINK_URL;
         const id = shortId();
         if(validateUrl(long_url)){
             try {
