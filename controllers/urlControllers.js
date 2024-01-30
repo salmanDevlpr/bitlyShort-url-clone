@@ -5,6 +5,7 @@ const {validateUrl} = require('../utils/validationUrl');
 require('dotenv').config();
 const cloudinary  = require('../utils/cloudinary');
 const QrCodeModel = require('../models/qrcodeModel');
+const fs = require("fs");
 
 const getAllUrls = async(req, res)=> {
     const urls = await UrlModel.find({}, {
@@ -149,12 +150,14 @@ const getQrCodeScanned = async (req, res) => {
 
 const uplaodImage = async(req, res) => {
     try {
-        const result = await cloudinary.uploader.upload(req.file.path)
+        const localFilePath = req.file?.path;
+        const result = await cloudinary.uploader.upload(localFilePath)
         const imageFile = await ImageModel.create({
            imageUrl: result.secure_url,
            cloudinaryId: result.public_id,
 
         })
+        fs.unlink(localFilePath);
         res.status(200).json(imageFile)
     } catch (error) {
         console.log('error', error.message);
