@@ -9,5 +9,5 @@ const imageSchema = new mongoose.Schema({
     },
 }, {timestamps: true})
 
-const ImageModel = mongoose.model('image', imageSchema);
+const ImageModel = mongoose.model('Image', imageSchema);
 module.exports = ImageModel;

@@ -9,10 +9,12 @@ const {
     deleteImage,
     qrCodeSortenGenerator,
     getQrCodeScanned,
-    getAllQrUrls
+    getAllQrUrls,
+    qrCodeCustomize
 } = require('../controllers/urlControllers');
 
 const { registerController, getLoginUsers, loginController, logoutController } = require('../controllers/authControllers')
+
 const { upload } = require('../utils/upload');
 const authMiddleware = require('../middleware/authMiddleware')
 
@@ -43,6 +45,8 @@ router.post('/imageupload', upload.single('image'), uplaodImage)
 router.get('/image/allimages', getAllImage)
 
 router.delete('/delete/:id', deleteImage)
+
+router.post('/customizeQr', qrCodeCustomize)
 
 
 module.exports = router;

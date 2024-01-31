@@ -1,6 +1,7 @@
 const shortId = require('shortid')
 const UrlModel = require('../models/linkModel');
 const ImageModel = require('../models/imageModel')
+const CustomizeQrModel = require('../models/customizeQrModel.js');
 const {validateUrl} = require('../utils/validationUrl');
 require('dotenv').config();
 const cloudinary  = require('../utils/cloudinary');
@@ -150,14 +151,12 @@ const getQrCodeScanned = async (req, res) => {
 
 const uplaodImage = async(req, res) => {
     try {
-        const localFilePath = req.file?.path;
-        const result = await cloudinary.uploader.upload(localFilePath)
+        const result = await cloudinary.uploader.upload(req.file.path)
         const imageFile = await ImageModel.create({
            imageUrl: result.secure_url,
            cloudinaryId: result.public_id,
 
         })
-        fs.unlink(localFilePath);
         res.status(200).json(imageFile)
     } catch (error) {
         console.log('error', error.message);
@@ -194,6 +193,29 @@ const deleteImage = async(req, res) => {
 }
 
 
+const qrCodeCustomize = async(req, res) => {
+    try {
+        console.log(req);
+        const { codeHex, bgColorHex, id, imgUrl } = req.body;
+        console.log('customize', customizeQr);
+        const result = await CustomizeQrModel.create({
+            codeHex,
+            bgColorHex,
+            id,
+            imgUrl
+        });
+    
+        res.status(201).json({
+            message: 'qr code customize successfully',
+            result
+        });
+    } catch (error) {
+        console.log('error', error);
+        return res.status(500).json({message: error.message})
+    }
+}
+
+
 
 module.exports = {
     urlSortenGenerator,
@@ -204,5 +226,6 @@ module.exports = {
     deleteImage,
     qrCodeSortenGenerator,
     getQrCodeScanned,
-    getAllQrUrls
+    getAllQrUrls,
+    qrCodeCustomize
 }

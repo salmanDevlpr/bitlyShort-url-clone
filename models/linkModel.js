@@ -34,11 +34,12 @@ const urlSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0,
-    }
+    },
+    
 }, {
     timestamps: true
   }
 )
 
-const UrlModel = mongoose.model('urlshorten', urlSchema);
+const UrlModel = mongoose.model('Urlshorten', urlSchema);
 module.exports = UrlModel;
