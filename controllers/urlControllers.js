@@ -197,7 +197,6 @@ const qrCodeCustomize = async(req, res) => {
     try {
         console.log(req);
         const { codeHex, bgColorHex, id, imgUrl } = req.body;
-        console.log('customize', customizeQr);
         const result = await CustomizeQrModel.create({
             codeHex,
             bgColorHex,
