@@ -10,7 +10,8 @@ const {
     qrCodeSortenGenerator,
     getQrCodeScanned,
     getAllQrUrls,
-    qrCodeCustomize
+    qrCodeCustomize,
+    getQrCodeCustomize
 } = require('../controllers/urlControllers');
 
 const { registerController, getLoginUsers, loginController, logoutController } = require('../controllers/authControllers')
@@ -28,6 +29,8 @@ router.get('/short/urls', getAllUrls)
 router.get('/qrcode/scan/links', getAllQrUrls)
 
 router.get('/logged/user', getLoginUsers)
+
+router.get('/all/customizeQr', getQrCodeCustomize)
 
 router.post('/bitlyurl/generator', urlSortenGenerator)
 

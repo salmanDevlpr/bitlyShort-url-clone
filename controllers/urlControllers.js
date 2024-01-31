@@ -214,6 +214,19 @@ const qrCodeCustomize = async(req, res) => {
     }
 }
 
+const getQrCodeCustomize = async(req, res) => {
+    try {
+        const result = await CustomizeQrModel.find({});
+        res.status(201).json({
+            message: 'All customize data fetched successfully',
+            result
+        });
+    } catch (error) {
+        console.log('error', error);
+        return res.status(500).json({message: error.message})
+    }
+}
+
 
 
 module.exports = {
@@ -226,5 +239,6 @@ module.exports = {
     qrCodeSortenGenerator,
     getQrCodeScanned,
     getAllQrUrls,
-    qrCodeCustomize
+    qrCodeCustomize,
+    getQrCodeCustomize
 }
