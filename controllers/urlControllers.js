@@ -227,6 +227,17 @@ const getQrCodeCustomize = async(req, res) => {
     }
 }
 
+const deleteCustomizeQr = async(req, res) => {
+    const qrId = await CustomizeQrModel.findOne(req.params.qr_id);
+
+    if(!qrId){
+        return res.status(400).json({message: "QR Id not found"});
+    }
+
+    const deletedCustomizeQR = await CustomizeQrModel.findByIdAndDelete(qrId);
+    res.status(200).json({message: "customize qr deleted successfully...", success: true, deletedCustomizeQR})
+
+}
 
 
 module.exports = {
@@ -240,5 +251,6 @@ module.exports = {
     getQrCodeScanned,
     getAllQrUrls,
     qrCodeCustomize,
-    getQrCodeCustomize
+    getQrCodeCustomize,
+    deleteCustomizeQr
 }

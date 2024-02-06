@@ -11,7 +11,8 @@ const {
     getQrCodeScanned,
     getAllQrUrls,
     qrCodeCustomize,
-    getQrCodeCustomize
+    getQrCodeCustomize,
+    deleteCustomizeQr
 } = require('../controllers/urlControllers');
 
 const { registerController, getLoginUsers, loginController, logoutController } = require('../controllers/authControllers')
@@ -50,6 +51,8 @@ router.get('/image/allimages', getAllImage)
 router.delete('/delete/:id', deleteImage)
 
 router.post('/customizeQr', qrCodeCustomize)
+
+router.delete('/delete/customzieQr', deleteCustomizeQr)
 
 
 module.exports = router;
