@@ -52,7 +52,7 @@ router.delete('/delete/:id', deleteImage)
 
 router.post('/customizeQr', qrCodeCustomize)
 
-router.delete('/delete/customzieQr', deleteCustomizeQr)
+router.delete('/delete/customzieQr/:id', deleteCustomizeQr)
 
 
 module.exports = router;

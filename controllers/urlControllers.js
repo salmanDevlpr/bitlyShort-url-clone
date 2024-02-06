@@ -228,7 +228,7 @@ const getQrCodeCustomize = async(req, res) => {
 }
 
 const deleteCustomizeQr = async(req, res) => {
-    const qrId = await CustomizeQrModel.findOne(req.params.qr_id);
+    const qrId = await CustomizeQrModel.findById(req.params.id);
 
     if(!qrId){
         return res.status(400).json({message: "QR Id not found"});
