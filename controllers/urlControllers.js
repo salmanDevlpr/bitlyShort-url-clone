@@ -6,7 +6,6 @@ const {validateUrl} = require('../utils/validationUrl');
 require('dotenv').config();
 const cloudinary  = require('../utils/cloudinary');
 const QrCodeModel = require('../models/qrcodeModel');
-const fs = require("fs");
 
 const getAllUrls = async(req, res)=> {
     const urls = await UrlModel.find({}, {
@@ -195,12 +194,11 @@ const deleteImage = async(req, res) => {
 
 const qrCodeCustomize = async(req, res) => {
     try {
-        console.log(req);
-        const { codeHex, bgColorHex, id, imgUrl } = req.body;
+        const { codeHex, bgColorHex, customizeId, imgUrl } = req.body;
         const result = await CustomizeQrModel.create({
             codeHex,
             bgColorHex,
-            id,
+            customizeId,
             imgUrl
         });
     
@@ -227,16 +225,15 @@ const getQrCodeCustomize = async(req, res) => {
     }
 }
 
-const deleteCustomizeQr = async(req, res) => {
-    const qrId = await CustomizeQrModel.findById(req.params.id);
 
-    if(!qrId){
-        return res.status(400).json({message: "QR Id not found"});
+const deleteCustomizeQr = async(req, res) =>{
+
+    const customizeQrCode  = await CustomizeQrModel.findOne({customizeId: req.params.customizeId});
+    if(!customizeQrCode){
+        return res.status(400).json({message: "Invalid customizeQrcode Id."})
     }
-
-    const deletedCustomizeQR = await CustomizeQrModel.findByIdAndDelete(qrId);
-    res.status(200).json({message: "customize qr deleted successfully...", success: true, deletedCustomizeQR})
-
+    const deletObj = await CustomizeQrModel.findByIdAndDelete(customizeQrCode?._id)
+    res.json({success: true, deletObj})
 }
 
 

@@ -13,7 +13,7 @@ const customizeQrModel = new mongoose.Schema({
     imgUrl:{
         type: String
     },
-    id:{
+    customizeId:{
         type: String
     },
 },{timestamps: true})
